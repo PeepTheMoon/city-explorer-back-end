@@ -1,10 +1,9 @@
 // IMPORT MODULES under test here:
 // import example from '../src/example.js';
-const { mungeLocation, mungeWeather } = require('../utils.js');
+const { mungeLocation, mungeWeather, mungeTrails } = require('../utils.js');
 const data = require('../data/geo.json');
 const weatherData = require('../data/weather.json');
-
-
+const trailsData = require('../data/trails.json');
 
 const test = QUnit.test;
 
@@ -93,6 +92,45 @@ test('should return empty obj with invalid input', function(assert) {
     //Act 
     // Call the function you're testing and set the result to a const
     const results = mungeWeather(null);
+    //Assert
+    // Make assertions about what is expected valid result
+    assert.deepEqual(results, expected);
+});
+
+
+test('should return trail data', function(assert) {
+    //Arrange
+    // Set up your parameters and expectations
+    const expected = [
+        {
+            name: 'Boulder Skyline Traverse',
+            location: 'Superior, Colorado',
+            length: 16.3,
+            stars: 4.7,
+            star_votes: 78,
+            summary: 'The classic long mountain route in Boulder.',
+            trail_url: `https://www.hikingproject.com/trail/7011192/boulder-skyline-traverse`,
+            conditions: 'Minor Issues',
+            condition_date: '2020-04-16 20:56:03',
+        }
+    ];
+    //Act 
+    // Call the function you're testing and set the result to a const
+    const results = mungeTrails(trailsData);
+    //Assert
+    // Make assertions about what is expected valid result
+    assert.deepEqual(results, expected);
+});
+
+//do another test to check about an empty object!
+
+test('should return empty obj with invalid input', function(assert) {
+    //Arrange
+    // Set up your parameters and expectations
+    const expected = [{}];
+    //Act 
+    // Call the function you're testing and set the result to a const
+    const results = mungeTrails(null);
     //Assert
     // Make assertions about what is expected valid result
     assert.deepEqual(results, expected);

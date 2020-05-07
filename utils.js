@@ -28,7 +28,31 @@ function mungeWeather(weatherData) {
     }
 }
 
+function mungeTrails(trailData) {
+
+    try {
+        const transformedData = trailData.trails.map((trail) => {
+            return {
+                name: trail.name,
+                location: trail.location,
+                length: trail.length,
+                stars: trail.stars,
+                star_votes: trail.starVotes,
+                summary: trail.summary,
+                trail_url: trail.url,
+                conditions: trail.conditionStatus,
+                condition_date: trail.conditionDate,
+            };
+        });
+        return transformedData;
+
+    } catch (e) {
+        return [{}];
+    }
+}
+
 module.exports = {
     mungeWeather,
     mungeLocation,
+    mungeTrails,
 };

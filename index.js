@@ -1,36 +1,31 @@
 
 const dotenv = require('dotenv');
 dotenv.config();
+
 const express = require('express');
 const cors = require('cors');
-const { mungeLocation } = require('./utils.js');
-const locationData = require('./data/geo.json');
-
+const { mungeLocation, mungeWeather } = require('./utils.js');
+const request = require('superagent');
 const PORT = process.env.PORT || 3000;
-
 const app = express();
-
 app.use(cors());
 
 
-app.get('/location', (req, res) => {
-    const mungedData = mungeLocation(locationData);
+app.get('/location', async(req, res) => {
+    const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.LOCATION_IQ_KEY}&q=${req.query.search}&format=json`);
 
+    const mungedData = mungeLocation(data.body);
+   
     res.json(mungedData);
 });
 
-app.get('/weather', (req, res) => {
-    console.log('you hit the weather route');
-    res.json([
-        {
-            'forecast': 'Partly cloudy until afternoon.',
-            'time': 'Mon Jan 01 2001'
-        },
-        {
-            'forecast': 'Mostly cloudy in the morning.',
-            'time': 'Tue Jan 02 2001'
-        },
-    ]);
+
+app.get('/weather', async(req, res) => {
+    const data = await request.get(`https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.query.latitude}&lon=${req.query.longitude}&key=${process.env.WEATHER_KEY}`);
+
+    const mungedData = mungeWeather(data.body);
+    
+    res.json(mungedData);
 });
 
 

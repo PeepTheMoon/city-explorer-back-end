@@ -19,7 +19,6 @@ app.get('/location', async(req, res) => {
     
         res.json(mungedData);
     } catch (e) {
-        console.error(500, 'Oops, you f-ed up buddy');
         res.json({
             status: 500,
             responseText: 'Oops, you f-ed up buddy',
@@ -36,7 +35,6 @@ app.get('/weather', async(req, res) => {
         
         res.json(mungedData);
     } catch (e) {
-        console.error(500, 'Oops, you f-ed up buddy');
         res.json({
             status: 500,
             responseText: 'Oops, you f-ed up buddy',
@@ -46,13 +44,12 @@ app.get('/weather', async(req, res) => {
 
 app.get('/trails', async(req, res) => {
     try {
-        const data = await request.get(`https://api.weatherbit.io/v2.0/forecast/daily?&lat=${req.query.latitude}&lon=${req.query.longitude}&key=${process.env.WEATHER_KEY}`);
+        const data = await request.get(`https://www.hikingproject.com/data/get-trails?lat=${req.query.latitude}&lon=${req.query.longitude}&maxDistance=200&key=${process.env.TRAILS_API_KEY}`);
 
         const mungedData = mungeTrails(data.body);
         
         res.json(mungedData);
     } catch (e) {
-        console.error(500, 'Oops, you f-ed up buddy');
         res.json({
             status: 500,
             responseText: 'Oops, you f-ed up buddy',

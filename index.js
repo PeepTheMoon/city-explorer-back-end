@@ -12,11 +12,19 @@ app.use(cors());
 
 
 app.get('/location', async(req, res) => {
-    const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.LOCATION_IQ_KEY}&q=${req.query.search}&format=json`);
+    try {
+        const data = await request.get(`https://us1.locationiq.com/v1/search.php?key=${process.env.LOCATION_IQ_KEY}&q=${req.query.search}&format=json`);
 
-    const mungedData = mungeLocation(data.body);
-   
-    res.json(mungedData);
+        const mungedData = mungeLocation(data.body);
+    
+        res.json(mungedData);
+    } catch (e) {
+        console.error(500, 'Oops, you f-ed up buddy');
+        res.json({
+            status: 500,
+            responseText: 'Oops, you f-ed up buddy',
+        });
+    }
 });
 
 

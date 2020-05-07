@@ -44,7 +44,7 @@ function mungeTrails(trailData) {
                 condition_date: trail.conditionDate,
             };
         });
-        return transformedData;
+        return transformedData.slice(0, 10);
 
     } catch (e) {
         return [{}];

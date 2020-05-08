@@ -51,8 +51,25 @@ function mungeTrails(trailData) {
     }
 }
 
+function mungedReviews(reviewData) {
+
+    try {
+        const transformedData = reviewData.reviews.map((review) => {
+            return {
+                id: review.id,
+                rating: review.rating,
+            };
+        });
+        return transformedData.slice(0, 20);
+
+    } catch (e) {
+        return [{}];
+    }
+}
+
 module.exports = {
     mungeWeather,
     mungeLocation,
     mungeTrails,
+    mungedReviews
 };
